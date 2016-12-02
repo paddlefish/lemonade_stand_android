@@ -1,0 +1,40 @@
+<resources>
+	<string name="app_name">Lemonade Stand</string>
+
+	<string name="hello_blank_fragment">Lemonade Stand</string>
+	<string name="beat_high_score_unset">Try to set a new high score!</string>
+	<string name="beat_high_score">Try to beat the old high score of $%1.02f points!</string>
+	<string name="play">Play</string>
+	<string name="go_shopping">Go Shopping!</string>
+	<string name="big_dollar_sign">$</string>
+	<string name="make_more_money">Time to make some money. Go buy supplies for lemonade!</string>
+	<string name="grocery_store_title">The Grocery Store</string>
+	<string name="buy_groceries">Buy Groceries</string>
+	<string name="product_name_lemons">Lemons</string>
+	<string name="product_name_sugar">Sugar</string>
+	<string name="product_name_ice">Ice</string>
+	<string name="product_details_lemons">%s per each lemon</string>
+	<string name="product_details_qty_on_hand">%d on hand</string>
+	<string name="product_details_sugar">%s per cup</string>
+	<string name="product_details_ice">%s per pound</string>
+	<string name="product_add_to_cart">+</string>
+	<string name="product_remove_from_cart">-</string>
+	<string name="get_cooking">Get Cookin’</string>
+	<string name="time_to_sell_lemonade">You have %s remaining. After mixing up all your ingredients according to your family’s secret recipe, it’s finally time to sell some Lemonade. Let’s hope the weather cooperates.</string>
+	<string name="what_to_charge">What do you want to charge per glass of lemonade? Enter the price below in cents.</string>
+	<string name="sell_button">Start Selling</string>
+	<string name="price_placeholder">Lemonade Price per cup in cents</string>
+	<plurals name="glasses_of_lemonade">
+		<item quantity="one">%d glass of lemonade</item>
+		<item quantity="other">%d glasses of lemonade</item>
+	</plurals>
+	<string name="out_of_money_title">Out Of Money</string>
+	<string name="out_of_money_you_lose">Sorry, but you have lost the game. You can play again, though!</string>
+	<string name="play_again_button">Play Again</string>
+	<string name="done_selling_title">%s Earned</string>
+	<string name="done_selling_details">Now you have %1$s. You had %2$s left over. Maybe Tomorrow we’ll make the $100 we need!</string>
+	<string name="done_selling_you_won">Congratulations! You made over %s &#8212; that’s enough to win the game!!</string>
+	<string name="done_selling_rest_up_button">Rest Up For Tomorrow</string>
+	<string name="done_selling_play_again">Play Again</string>
+
+</resources>

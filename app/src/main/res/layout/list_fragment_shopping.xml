@@ -1,0 +1,85 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+											 xmlns:app="http://schemas.android.com/apk/res-auto"
+											 xmlns:tools="http://schemas.android.com/tools"
+											 android:layout_width="match_parent"
+											 android:layout_height="match_parent"
+											 tools:context="net.paddlefish.lemonadestand.HelloFragment">
+
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="@string/hello_blank_fragment"
+		android:id="@+id/shoppingListProductName"
+		android:layout_marginTop="16dp"
+		app:layout_constraintTop_toTopOf="parent"
+		android:layout_marginStart="16dp"
+		app:layout_constraintLeft_toLeftOf="parent"/>
+
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="@string/beat_high_score_unset"
+		android:id="@+id/shoppingListProductDetails"
+		android:layout_marginStart="@dimen/activity_horizontal_margin"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/shoppingListProductName"
+		android:layout_marginTop="@dimen/activity_vertical_margin"
+		app:layout_constraintRight_toLeftOf="@+id/productQtyView"
+		android:layout_marginEnd="8dp"
+		app:layout_constraintHorizontal_bias="0.0"/>
+
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="@string/product_details_qty_on_hand"
+		android:id="@+id/shoppingListProductQtyOnHand"
+		android:layout_marginStart="@dimen/activity_horizontal_margin"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/shoppingListProductDetails"
+		android:layout_marginTop="@dimen/activity_vertical_margin"
+		app:layout_constraintRight_toLeftOf="@+id/productQtyView"
+		android:layout_marginEnd="8dp"
+		app:layout_constraintHorizontal_bias="0.0"/>
+
+	<Button
+		android:text="@string/product_remove_from_cart"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/productRemoveButton"
+		app:layout_constraintBottom_toBottomOf="parent"
+		android:layout_marginBottom="16dp"
+		android:layout_marginTop="16dp"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintVertical_bias="0.0"
+		app:layout_constraintRight_toLeftOf="@+id/productAddButton"
+		style="@style/Widget.AppCompat.Button.Small"/>
+
+	<Button
+		android:text="@string/product_add_to_cart"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/productAddButton"
+		android:layout_marginEnd="8dp"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+		android:layout_marginBottom="16dp"
+		android:layout_marginTop="16dp"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintVertical_bias="0.0"
+		style="@style/Widget.AppCompat.Button.Small"/>
+
+	<EditText
+		android:layout_width="47dp"
+		android:layout_height="48dp"
+		android:inputType="number"
+		android:ems="10"
+		android:id="@+id/productQtyView"
+		android:gravity="center_horizontal"
+		android:layout_marginTop="16dp"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintRight_toLeftOf="@+id/productRemoveButton"
+		tools:layout_editor_absoluteX="217dp"/>
+	<!-- Note we cannot use onClick attribute if we want the message handling to go through
+	the fragment because Android will look for the onClick method only in the current Activity -->
+
+</android.support.constraint.ConstraintLayout>

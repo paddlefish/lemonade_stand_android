@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  xmlns:app="http://schemas.android.com/apk/res-auto"
+			  xmlns:tools="http://schemas.android.com/tools"
+			  android:layout_width="match_parent"
+			  android:layout_height="match_parent"
+			  android:orientation="vertical"
+			  android:layout_gravity="center_horizontal"
+			  tools:context="net.paddlefish.lemonadestand.HelloFragment"
+			  android:gravity="center_horizontal">
+
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="@string/get_cooking"
+		android:id="@+id/numGlassesOfLemonadeLabel"
+		android:textSize="32sp"
+		android:textAlignment="center"
+		tools:layout_editor_absoluteY="72dp"
+		tools:layout_editor_absoluteX="111dp"
+		android:layout_marginTop="@dimen/activity_vertical_margin"/>
+
+	<TextView
+		android:layout_height="132dp"
+		android:layout_width="233dp"
+		android:text="@string/time_to_sell_lemonade"
+		android:id="@+id/getCookingDetail"
+		android:lines="6"
+		android:gravity="center_horizontal"
+		android:textAlignment="center"
+		tools:layout_editor_absoluteY="150dp"
+		tools:layout_editor_absoluteX="76dp"
+		android:layout_marginTop="@dimen/activity_vertical_margin"/>
+
+	<TextView
+		android:layout_height="132dp"
+		android:layout_width="match_parent"
+		android:text="@string/what_to_charge"
+		android:id="@+id/whatToCharge"
+		android:lines="6"
+		android:gravity="center_horizontal"
+		android:textAlignment="center"
+		tools:layout_editor_absoluteY="150dp"
+		tools:layout_editor_absoluteX="76dp"
+		android:layout_marginTop="@dimen/activity_vertical_margin"/>
+
+	<EditText
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:inputType="number"
+		android:ems="10"
+		android:hint="@string/price_placeholder"
+		android:id="@+id/whatToChargeInputView"
+		android:gravity="center_vertical|center_horizontal"/>
+
+	<Button
+		android:text="@string/sell_button"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/startSellingNow"
+		tools:layout_editor_absoluteY="447dp"
+		tools:layout_editor_absoluteX="129dp"
+		android:layout_marginTop="@dimen/activity_vertical_margin"/>
+	<!-- Note we cannot use onClick attribute if we want the message handling to go through
+	the fragment because Android will look for the onClick method only in the current Activity -->
+
+</LinearLayout>
