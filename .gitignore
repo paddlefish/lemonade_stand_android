@@ -7,3 +7,5 @@
 /build
 /captures
 .externalNativeBuild
+lemonade_stand.keystore
+*.apk
