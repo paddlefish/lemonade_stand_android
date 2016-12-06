@@ -25,6 +25,10 @@ public class GameModel extends GameModelBase implements IGameState {
 	}
 
 	public GameModel(IGameState gameState) {
+		this(0);
+		if (gameState == null) {
+			return;
+		}
 		this.money = gameState.getMoney();
 		this.prices = gameState.getPrices();
 		this.inventory = gameState.getInventory();

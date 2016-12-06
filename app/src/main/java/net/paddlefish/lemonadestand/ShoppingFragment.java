@@ -3,6 +3,7 @@ package net.paddlefish.lemonadestand;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import java.util.Locale;
  * create an instance of this fragment.
  */
 public class ShoppingFragment extends GameStateFragment {
+	final static String PARAM_QTY_ORDERED = "PARAM_QTY_ORDERED";
 
 	private GameGroceries qtyOrdered = new GameGroceries(0, 0, 0);
 
@@ -54,8 +56,21 @@ public class ShoppingFragment extends GameStateFragment {
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putParcelable(PARAM_QTY_ORDERED, qtyOrdered);
+
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
+		if (savedInstanceState != null) {
+			GameGroceries oldQtyOrdered = savedInstanceState.getParcelable(PARAM_QTY_ORDERED);
+			if (oldQtyOrdered != null) {
+				qtyOrdered = oldQtyOrdered;
+			}
+		}
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_shopping, container, false);
 

@@ -27,15 +27,15 @@ public final class GameGroceries implements Parcelable {
 		parcel.writeInt(ice);
 	}
 
-	int getIce() {
+	public int getIce() {
 		return ice;
 	}
 
-	int getSugar() {
+	public int getSugar() {
 		return sugar;
 	}
 
-	int getLemons() {
+	public int getLemons() {
 		return lemons;
 	}
 }
