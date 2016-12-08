@@ -9,3 +9,4 @@
 .externalNativeBuild
 lemonade_stand.keystore
 *.apk
+.idea/misc.xml
