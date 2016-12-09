@@ -1,8 +1,6 @@
 package net.paddlefish.lemonadestand;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements
 		DoneSellingFragment.OnFragmentInteractionListener {
 
 	private GameState mGameState;
-	private String currentScreen;
+	private GameScreen mCurrentScreen;
 	private final static String PARAM_SAVED_GAME_SCREEN_CODE = "PARAM_SAVED_GAME_SCREEN_CODE";
 	private final static String PARAM_SAVED_GAME_STATE = "PARAM_SAVED_GAME_STATE";
 
@@ -84,13 +82,14 @@ public class MainActivity extends AppCompatActivity implements
 		if (savedInstanceState == null) {
 			switchToScreen(GameScreen.HELLO, new GameModel(null));
 		} else {
-			GameScreen currentScreen = null;
-			GameState savedState = null;
 			String code = savedInstanceState.getString(PARAM_SAVED_GAME_SCREEN_CODE);
 			if (code != null) {
-				currentScreen = GameScreen.screenForCode(code);
+				mCurrentScreen = GameScreen.screenForCode(code);
 			}
-			savedState = savedInstanceState.getParcelable(PARAM_SAVED_GAME_STATE);
+			GameState savedState = savedInstanceState.getParcelable(PARAM_SAVED_GAME_STATE);
+			if (savedState != null) {
+				mGameState = savedState;
+			}
 		}
 	}
 
@@ -112,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putParcelable(PARAM_SAVED_GAME_STATE, mGameState);
-		outState.putString(PARAM_SAVED_GAME_SCREEN_CODE, currentScreen);
+		outState.putString(PARAM_SAVED_GAME_SCREEN_CODE, mCurrentScreen.screenCode);
 
 		// Always call the superclass so it can save the view hierarchy state
 		super.onSaveInstanceState(outState);
@@ -124,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements
 	}
 
 	private void switchToScreen(GameScreen screen, GameModel gameModel) {
-		currentScreen = screen.screenCode;
+		mCurrentScreen = screen;
 		switchToScreen(screen, gameModel, 0, 0);
 	}
 
