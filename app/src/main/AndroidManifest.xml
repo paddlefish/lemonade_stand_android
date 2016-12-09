@@ -8,12 +8,23 @@
 		android:label="@string/app_name"
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
-		<activity android:name=".MainActivity" android:persistableMode="persistAcrossReboots">
+		<activity
+			android:name=".MainActivity"
+			android:persistableMode="persistAcrossReboots">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
+		</activity>
+		<activity
+			android:name=".RulesActivity"
+			android:label="@string/title_activity_rules"
+			android:parentActivityName=".MainActivity"
+			android:theme="@style/AppTheme">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="net.paddlefish.lemonadestand.MainActivity"/>
 		</activity>
 	</application>
 

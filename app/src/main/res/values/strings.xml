@@ -36,5 +36,7 @@
 	<string name="done_selling_you_won">Congratulations! You made over %s &#8212; that’s enough to win the game!!</string>
 	<string name="done_selling_rest_up_button">Rest Up For Tomorrow</string>
 	<string name="done_selling_play_again">Play Again</string>
+	<string name="action_rules">Rules</string>
+	<string name="title_activity_rules">Rules</string>
 
 </resources>

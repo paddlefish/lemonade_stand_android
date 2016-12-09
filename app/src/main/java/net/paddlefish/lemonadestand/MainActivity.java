@@ -1,11 +1,16 @@
 package net.paddlefish.lemonadestand;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import net.paddlefish.lemonadestand.model.GameGroceries;
 import net.paddlefish.lemonadestand.model.GameModel;
@@ -60,10 +65,22 @@ public class MainActivity extends AppCompatActivity implements
 	private final static String PARAM_SAVED_GAME_SCREEN_CODE = "PARAM_SAVED_GAME_SCREEN_CODE";
 	private final static String PARAM_SAVED_GAME_STATE = "PARAM_SAVED_GAME_STATE";
 
+	/*
+		You must implement the onCreate() method to perform basic application startup logic
+		that should happen only once for the entire life of the activity. For example, your
+		implementation of onCreate() should define the user interface and possibly instantiate
+		some class-scope variables.
+
+		The system calls this method -- you should never call it EXCEPT you must call super's as shown here.
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar); // Attaching the layout to the toolbar object
+		setSupportActionBar(toolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
+
 		if (savedInstanceState == null) {
 			switchToScreen(GameScreen.HELLO, new GameModel(null));
 		} else {
@@ -77,6 +94,21 @@ public class MainActivity extends AppCompatActivity implements
 		}
 	}
 
+	/*
+		The very last callback is onDestroy(). The system calls this method on your activity
+		as the final signal that your activity instance is being completely removed from
+		the system memory.
+
+		Most apps don't need to implement this method -- clean up should be handled in
+		onPause or onStop
+
+		The system calls this method -- you should never call it EXCEPT you must call super's as shown here.
+	 */
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putParcelable(PARAM_SAVED_GAME_STATE, mGameState);
@@ -87,15 +119,6 @@ public class MainActivity extends AppCompatActivity implements
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-		outState.putParcelable(PARAM_SAVED_GAME_STATE, mGameState);
-		outState.putString(PARAM_SAVED_GAME_SCREEN_CODE, currentScreen);
-
-		// Always call the superclass so it can save the view hierarchy state
-		super.onSaveInstanceState(outState, outPersistentState);
-	}
-
-	@Override
 	protected void onStart() {
 		super.onStart();
 	}
@@ -103,6 +126,31 @@ public class MainActivity extends AppCompatActivity implements
 	private void switchToScreen(GameScreen screen, GameModel gameModel) {
 		currentScreen = screen.screenCode;
 		switchToScreen(screen, gameModel, 0, 0);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main_menu, menu);
+		return true;
+
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+
+		//noinspection SimplifiableIfStatement
+		if (id == R.id.action_settings) {
+			Intent settingsIntent = new Intent(this, RulesActivity.class);
+			startActivity(settingsIntent);
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void switchToScreen(GameScreen screen, GameModel gameModel, int moneyEarned, int glassesWasted) {
@@ -143,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements
 		}
 		FragmentTransaction transaction = manager
 				.beginTransaction()
-				.replace(R.id.activity_main, nextFragment);
+				.replace(R.id.placeholder_view, nextFragment);
 
 		if (addToBackStack) {
 			transaction.addToBackStack(null);

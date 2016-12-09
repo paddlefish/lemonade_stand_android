@@ -2,6 +2,7 @@ package net.paddlefish.lemonadestand;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -76,6 +78,24 @@ public class HelloFragment extends Fragment {
 		});
 
 		return result;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		ImageView blinkyView = (ImageView) getView().findViewById(R.id.imageView);
+		AnimationDrawable anim = (AnimationDrawable) blinkyView.getDrawable();
+		anim.start();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		ImageView blinkyView = (ImageView) getView().findViewById(R.id.imageView);
+		AnimationDrawable anim = (AnimationDrawable) blinkyView.getDrawable();
+		anim.stop();
 	}
 
 	public void onStartGameButtonPushed(View v) {
