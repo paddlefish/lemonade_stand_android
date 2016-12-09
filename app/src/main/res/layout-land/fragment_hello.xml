@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+											 xmlns:app="http://schemas.android.com/apk/res-auto"
+											 xmlns:tools="http://schemas.android.com/tools"
+											 android:layout_width="match_parent"
+											 android:layout_height="match_parent"
+											 tools:context="net.paddlefish.lemonadestand.HelloFragment">
+
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:srcCompat="@drawable/blinky"
+		android:contentDescription="@string/app_name"
+		android:id="@+id/imageView"
+		android:layout_marginStart="33dp"
+		android:layout_marginTop="33dp"
+		android:layout_alignParentTop="true"/>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:layout_alignParentTop="true"
+		android:layout_toEndOf="@id/imageView"
+		android:gravity="center_horizontal"
+		android:orientation="vertical"
+		>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="@string/hello_blank_fragment"
+			android:id="@+id/appNameTextView"
+			android:layout_marginTop="27dp"
+			android:textAppearance="@style/TextAppearance.AppCompat.Display1"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="@string/beat_high_score_unset"
+			android:id="@+id/beatHighScoreTextView"
+			android:layout_marginTop="80dp"/>
+
+		<Button
+			android:text="@string/play"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/startGameButton"
+			android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+	</LinearLayout>
+
+</RelativeLayout>
