@@ -14,7 +14,22 @@ public final class GameGroceries implements Parcelable {
 		this.ice = ice;
 	}
 
-	Creator<GameGroceries> CREATOR;
+	static Creator<GameGroceries> CREATOR = new Parcelable.Creator<GameGroceries>() {
+		@Override
+		public GameGroceries createFromParcel(Parcel parcel) {
+			return new GameGroceries(
+					parcel.readInt(),
+					parcel.readInt(),
+					parcel.readInt()
+			);
+		}
+
+		@Override
+		public GameGroceries[] newArray(int i) {
+			return new GameGroceries[i];
+		}
+	};
+
 	@Override
 	public int describeContents() {
 		return 0;

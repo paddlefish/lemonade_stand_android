@@ -4,7 +4,6 @@
 			  android:layout_width="match_parent"
 			  android:layout_height="match_parent"
 			  android:orientation="vertical"
-			  android:layout_gravity="center_horizontal"
 			  tools:context="net.paddlefish.lemonadestand.HelloFragment"
 			  android:gravity="center_horizontal">
 
@@ -14,9 +13,6 @@
 		android:text="@string/get_cooking"
 		android:id="@+id/numGlassesOfLemonadeLabel"
 		android:textSize="32sp"
-		android:textAlignment="center"
-		tools:layout_editor_absoluteY="72dp"
-		tools:layout_editor_absoluteX="111dp"
 		android:layout_marginTop="@dimen/activity_vertical_margin"/>
 
 	<TextView
@@ -25,7 +21,6 @@
 		android:text="@string/time_to_sell_lemonade"
 		android:id="@+id/getCookingDetail"
 		android:lines="6"
-		android:gravity="center_horizontal"
 		android:textAlignment="center"
 		tools:layout_editor_absoluteY="150dp"
 		tools:layout_editor_absoluteX="76dp"
