@@ -77,16 +77,11 @@ public class HelloFragment extends Fragment {
 			}
 		});
 
-		return result;
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		ImageView blinkyView = (ImageView) getView().findViewById(R.id.imageView);
+		ImageView blinkyView = (ImageView) result.findViewById(R.id.imageView);
 		AnimationDrawable anim = (AnimationDrawable) blinkyView.getDrawable();
 		anim.start();
+
+		return result;
 	}
 
 	@Override

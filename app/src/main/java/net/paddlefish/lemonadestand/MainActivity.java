@@ -109,6 +109,18 @@ public class MainActivity extends AppCompatActivity implements
 	}
 
 	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		// I put this here in case you want to add an informative Log statement
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+
+	/*
+			The system calls this method when the user is leaving your activity and passes it the
+			Bundle object that will be saved in the event that your activity is destroyed. If the
+			system must recreate the activity instance later, it passes the same Bundle object to
+			both the onRestoreInstanceState() and onCreate() methods
+		*/
+	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putParcelable(PARAM_SAVED_GAME_STATE, mGameState);
 		outState.putString(PARAM_SAVED_GAME_SCREEN_CODE, mCurrentScreen.screenCode);
@@ -122,6 +134,26 @@ public class MainActivity extends AppCompatActivity implements
 		super.onStart();
 	}
 
+	@Override
+	protected void onStop() {
+		super.onStop();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+	}
+
 	private void switchToScreen(GameScreen screen, GameModel gameModel) {
 		mCurrentScreen = screen;
 		switchToScreen(screen, gameModel, 0, 0);
@@ -132,7 +164,6 @@ public class MainActivity extends AppCompatActivity implements
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main_menu, menu);
 		return true;
-
 	}
 
 	@Override
