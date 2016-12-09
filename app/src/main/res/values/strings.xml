@@ -32,7 +32,7 @@
 	<string name="out_of_money_you_lose">Sorry, but you have lost the game. You can play again, though!</string>
 	<string name="play_again_button">Play Again</string>
 	<string name="done_selling_title">%s Earned</string>
-	<string name="done_selling_details">Now you have %1$s. You had %2$s left over. Maybe Tomorrow we’ll make the $100 we need!</string>
+	<string name="done_selling_details">Now you have %1$s. You had %2$d left over. Maybe Tomorrow we’ll make the $100 we need!</string>
 	<string name="done_selling_you_won">Congratulations! You made over %s &#8212; that’s enough to win the game!!</string>
 	<string name="done_selling_rest_up_button">Rest Up For Tomorrow</string>
 	<string name="done_selling_play_again">Play Again</string>
