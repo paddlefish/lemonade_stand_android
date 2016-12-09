@@ -9,7 +9,6 @@
 		android:orderInCategory="200"
 		android:title="Settings"
 		android:icon="@drawable/lemon"
-		app:showAsAction="ifRoom"
-		></item>
+		app:showAsAction="ifRoom" />
 
 </menu>
