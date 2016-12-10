@@ -77,10 +77,6 @@ public class HelloFragment extends Fragment {
 			}
 		});
 
-		ImageView blinkyView = (ImageView) result.findViewById(R.id.imageView);
-		AnimationDrawable anim = (AnimationDrawable) blinkyView.getDrawable();
-		anim.start();
-
 		return result;
 	}
 
