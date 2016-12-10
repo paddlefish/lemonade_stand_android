@@ -27,7 +27,7 @@ public abstract class Accessor {
 		return get(state.getPrices());
 	}
 
-	static class Lemon extends Accessor {
+	public static class Lemon extends Accessor {
 		public int productName() { return R.string.product_name_lemons; }
 		public int details() { return R.string.product_details_lemons; }
 		public int get(GameGroceries groceries) { return groceries.getLemons(); }
@@ -36,7 +36,7 @@ public abstract class Accessor {
 		}
 	}
 
-	static class Sugar extends Accessor {
+	public static class Sugar extends Accessor {
 		public int productName() { return R.string.product_name_sugar; }
 		public int details() { return R.string.product_details_sugar; }
 		public int get(GameGroceries groceries) { return groceries.getSugar(); }
@@ -45,7 +45,7 @@ public abstract class Accessor {
 		}
 	}
 
-	static class Ice extends Accessor {
+	public static class Ice extends Accessor {
 		public int productName() { return R.string.product_name_ice; }
 		public int details() { return R.string.product_details_ice; }
 		public int get(GameGroceries groceries) { return groceries.getIce(); }

@@ -1,6 +1,8 @@
 package net.paddlefish.lemonadestand.model;
 
 
+import net.paddlefish.lemonadestand.service.PurchasingService;
+
 /**
  * Game logic for Lemonade Stand. Tracks how much money, lemons, sugar and ice is on hand.
  * Has methods for making and selling lemonade.
@@ -150,24 +152,33 @@ public class GameModel extends GameModelBase implements IGameState {
 	 * @return whether there was enough money to buy them all. If there is not enough money
 	 * then no groceries are purchased.
 	 */
-	public boolean buySome(GameGroceries quantities) {
-		Accessor[] accessors = new Accessor[] { new Accessor.Lemon(), new Accessor.Sugar(), new Accessor.Ice() };
+	public void buySome(final GameGroceries quantities, final PurchasingService.PurchaseCompletion completion) {
+		final Accessor[] accessors = new Accessor[] { new Accessor.Lemon(), new Accessor.Sugar(), new Accessor.Ice() };
 
-		int totalPrice = 0;
-		for (Accessor accessor: accessors) {
-			totalPrice += accessor.getPrice(this) * accessor.get(quantities);
-		}
+		final PurchasingService purchasingService = new PurchasingService();
+
+		final int totalPrice = purchasingService.calculatePriceForGroceries(quantities, prices);
+
 		if (money < totalPrice) {
-			return false;
+			completion.result(false);
+			return;
 		}
-		GameGroceries inventory = this.inventory;
-		for (Accessor accessor: accessors) {
-			int curQty = accessor.get(inventory);
-			inventory = accessor.set(inventory, curQty + accessor.get(quantities));
-		}
-		this.inventory = inventory;
-		money -= totalPrice;
-		return true;
+
+		new PurchasingService().purchaseGroceries(quantities, totalPrice, prices, new PurchasingService.PurchaseCompletion() {
+			@Override
+			public void result(boolean success) {
+				if (success) {
+					GameGroceries newInventory = inventory;
+					for (Accessor accessor: accessors) {
+						int curQty = accessor.get(newInventory);
+						newInventory = accessor.set(newInventory, curQty + accessor.get(quantities));
+					}
+					inventory = newInventory;
+					money -= totalPrice;
+				}
+				completion.result(success);
+			}
+		});
 	}
 
 	/**

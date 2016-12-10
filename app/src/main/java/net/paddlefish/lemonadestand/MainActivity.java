@@ -1,5 +1,6 @@
 package net.paddlefish.lemonadestand;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +16,7 @@ import net.paddlefish.lemonadestand.model.GameGroceries;
 import net.paddlefish.lemonadestand.model.GameModel;
 import net.paddlefish.lemonadestand.model.GameState;
 import net.paddlefish.lemonadestand.model.IGameState;
+import net.paddlefish.lemonadestand.service.PurchasingService;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -253,14 +255,26 @@ public class MainActivity extends AppCompatActivity implements
 
 	@Override
 	public void buyGroceriesButtonPressed(IGameState previousState, GameGroceries qtyOrdered) {
-		GameModel  gameModel = new GameModel(previousState);
-		if (gameModel.buySome(qtyOrdered)) {
-			gameModel.makeLemonade();
-			switchToScreen(GameScreen.MAKING, gameModel);
-		}
-		else {
-			switchToScreen(GameScreen.OUT_OF_MONEY, gameModel);
-		}
+		final GameModel gameModel = new GameModel(previousState);
+
+		final ProgressDialog dialog = new ProgressDialog(this);
+		dialog.setCancelable(false);
+		dialog.setIndeterminate(true);
+		dialog.show();
+
+		gameModel.buySome(qtyOrdered, new PurchasingService.PurchaseCompletion() {
+			@Override
+			public void result(boolean success) {
+				dialog.dismiss();
+				if (success) {
+					gameModel.makeLemonade();
+					switchToScreen(GameScreen.MAKING, gameModel);
+				}
+				else {
+					switchToScreen(GameScreen.OUT_OF_MONEY, gameModel);
+				}
+			}
+		});
 	}
 
 	@Override
