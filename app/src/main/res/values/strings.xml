@@ -38,5 +38,6 @@
 	<string name="done_selling_play_again">Play Again</string>
 	<string name="action_rules">Rules</string>
 	<string name="title_activity_rules">Rules</string>
+	<string name="settings">Settings</string>
 
 </resources>
