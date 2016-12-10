@@ -10,6 +10,7 @@
 	<TextView
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
+		android:layout_gravity="start"
 		android:text="@string/get_cooking"
 		android:id="@+id/numGlassesOfLemonadeLabel"
 		android:textSize="32sp"
