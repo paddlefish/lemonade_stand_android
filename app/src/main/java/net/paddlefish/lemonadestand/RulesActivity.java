@@ -57,6 +57,16 @@ public class RulesActivity extends AppCompatActivity {
 		// the R.id.rulesListIcon and R.id.rulesListRuleText views to
 		// the rules proided by getRules()
 
+		ListView rulesList = (ListView) findViewById(R.id.rulesList);
+		String from[] = new String [] {
+			"rule", "icon",
+		};
+		int to[] = new int [] {
+				R.id.rulesListRuleText,
+				R.id.rulesListIcon
+		};
+		rulesList.setAdapter(new SimpleAdapter(getApplicationContext(), getRules(), R.layout.rules_item, from, to));
+
 	}
 
 }
