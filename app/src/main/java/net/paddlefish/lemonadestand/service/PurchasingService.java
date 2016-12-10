@@ -42,8 +42,28 @@ public class PurchasingService {
 	 * @param completion Callback when completed
 	 */
 	public void purchaseGroceries(final GameGroceries quantities, final int money, final GameGroceries prices, final PurchaseCompletion completion) {
-		final boolean result = runPurchaseSync(quantities, money, prices, completion);
-		completion.result(result);
+		new Timer().schedule(
+				new TimerTask() {
+					@Override
+					public void run() {
+						new Thread(new Runnable() {
+							@Override
+							public void run() {
+								final boolean result = runPurchaseSync(quantities, money, prices, completion);
+
+								Handler uiHandler = new Handler(Looper.getMainLooper());
+								uiHandler.post(new Runnable() {
+									@Override
+									public void run() {
+										completion.result(result);
+									}
+								});
+							}
+						}).start();
+					}
+				},
+				1000
+		);
 	}
 
 	private boolean runPurchaseSync(final GameGroceries quantities, final int money, final GameGroceries prices, final PurchaseCompletion completion) {
