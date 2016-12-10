@@ -77,10 +77,6 @@ public class HelloFragment extends Fragment {
 			}
 		});
 
-		ImageView blinkyView = (ImageView) result.findViewById(R.id.imageView);
-		AnimationDrawable anim = (AnimationDrawable) blinkyView.getDrawable();
-		anim.start();
-
 		return result;
 	}
 
@@ -91,6 +87,14 @@ public class HelloFragment extends Fragment {
 		ImageView blinkyView = (ImageView) getView().findViewById(R.id.imageView);
 		AnimationDrawable anim = (AnimationDrawable) blinkyView.getDrawable();
 		anim.stop();
+	}
+
+	public void onResume() {
+		super.onResume();
+		
+		ImageView blinkyView = (ImageView) getView().findViewById(R.id.imageView);
+		AnimationDrawable anim = (AnimationDrawable) blinkyView.getDrawable();
+		anim.start();
 	}
 
 	public void onStartGameButtonPushed(View v) {
