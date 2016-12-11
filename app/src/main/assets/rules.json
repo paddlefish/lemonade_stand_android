@@ -1,0 +1,28 @@
+[
+    {
+        "rules": [
+            "Never play on an empty stomach",
+            "If life gives you lemons, make lemonade!",
+            "No crying allowed",
+            "Sell lemonade for a higher price than it cost you to make it"
+        ],
+        "section_title": "Introduction"
+    },
+    {
+        "rules": [
+            "Start with $10",
+            "Buy some of each ingredient at the store",
+            "Be careful not to spend more money than you have",
+            "Figure out how much your lemonade cost to make, and then sell it for more than that",
+            "But don't make it TOO expensive, or else people might not buy it."
+        ],
+        "section_title": "Game Play"
+    },
+    {
+        "rules": [
+            "You win the game when you have more than $100",
+            "To make it onto the high score list, try to make your last round a very profitable one!"
+        ],
+        "section_title": "Winning"
+    }
+]
