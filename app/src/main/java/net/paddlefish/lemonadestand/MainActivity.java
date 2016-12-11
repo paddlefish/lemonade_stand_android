@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
+import net.paddlefish.lemonadestand.service.AnnoyingPromptService;
 import net.paddlefish.lemonadestand.service.GameSetupService;
 import net.paddlefish.lemonadestand.service.HighScoreService;
 import net.paddlefish.lemonadestand.utils.Cancellable;
@@ -34,7 +35,9 @@ public class MainActivity extends AppCompatActivity implements
 		OutOfMoneyFragment.OnFragmentInteractionListener,
 		DoneSellingFragment.OnFragmentInteractionListener {
 
+	private static final String PARAM_HAVE_SENT_REQUEST_FOR_FEEDBACK = "PARAM_HAVE_SENT_REQUEST_FOR_FEEDBACK";
 	private boolean isActive;
+	private boolean haveSentRequestForFeedback;
 	private CancellationPool mCancellationPool = new CancellationPool();
 
 	/*
@@ -51,8 +54,19 @@ public class MainActivity extends AppCompatActivity implements
 
 		setContentView(R.layout.activity_main);
 
+		if (savedInstanceState != null) {
+			haveSentRequestForFeedback = savedInstanceState.getBoolean(PARAM_HAVE_SENT_REQUEST_FOR_FEEDBACK);
+		}
+
 		Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar); // Attaching the layout to the toolbar object
 		setSupportActionBar(toolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putBoolean(PARAM_HAVE_SENT_REQUEST_FOR_FEEDBACK, haveSentRequestForFeedback);
 	}
 
 	@Override
@@ -62,6 +76,10 @@ public class MainActivity extends AppCompatActivity implements
 		ViewGroup frame = (ViewGroup) findViewById(R.id.placeholder_view);
 		if (frame.getChildCount() == 0) {
 			switchToHelloScreen();
+		}
+		if (!haveSentRequestForFeedback) {
+			haveSentRequestForFeedback = true;
+			AnnoyingPromptService.startActionSendAnnoyingMessageLater(this, "Please fill out our survey", 42);
 		}
 	}
 

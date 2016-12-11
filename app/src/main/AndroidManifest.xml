@@ -2,7 +2,7 @@
 <manifest package="net.paddlefish.lemonadestand"
 		  xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.INTERNET"/>
 
 	<application
 		android:allowBackup="true"
@@ -13,6 +13,7 @@
 
 		<activity
 			android:name=".MainActivity"
+			android:launchMode="singleTop"
 			android:persistableMode="persistAcrossReboots">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
@@ -23,6 +24,22 @@
 		<activity
 			android:name=".RulesActivity"
 			android:label="@string/title_activity_rules"
+			android:parentActivityName=".MainActivity"
+			android:theme="@style/AppTheme">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="net.paddlefish.lemonadestand.MainActivity"/>
+		</activity>
+
+		<service
+			android:name=".service.AnnoyingPromptService"
+			android:process=":whatever"
+			android:exported="false">
+		</service>
+
+		<activity
+			android:name=".SurveyActivity"
+			android:label="@string/title_activity_survey"
 			android:parentActivityName=".MainActivity"
 			android:theme="@style/AppTheme">
 			<meta-data
