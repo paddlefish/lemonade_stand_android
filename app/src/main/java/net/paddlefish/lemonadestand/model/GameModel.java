@@ -2,6 +2,8 @@ package net.paddlefish.lemonadestand.model;
 
 
 import net.paddlefish.lemonadestand.service.PurchasingService;
+import net.paddlefish.lemonadestand.service.SellingService;
+import net.paddlefish.lemonadestand.utils.Cancellable;
 
 /**
  * Game logic for Lemonade Stand. Tracks how much money, lemons, sugar and ice is on hand.
@@ -125,32 +127,42 @@ public class GameModel extends GameModelBase implements IGameState {
 			this.glassesWasted = glassesWasted;
 		}
 
+		public interface Callback {
+			void saleCompleted(SalesResults results);
+			void saleInProgress(int hour, int numSold);
+		}
 	}
+
 	/**
 	 * Sell lemonade, selling to a certain percentage of
 	 * possible sales. 100% means you sell out.
-	 * @param saleRate a value between 0.0 and 1.0
 	 * @param price price per glass of lemonade in cents
+	 * @param callback callback object for collecting results
 	 */
-	public SalesResults sellLemonade(double saleRate, int price) {
+	public Cancellable sellLemonade(final int price, final SalesResults.Callback callback) {
+		SellingService service = new SellingService();
+		return service.sellLemonade(getGameState(), price, new SellingService.SellingCallback() {
+			@Override
+			public void progress(int hourOfDay, int numGlassesSold) {
+				callback.saleInProgress(hourOfDay, numGlassesSold);
+			}
 
-		double howMuchLemonade = lemonade;
-		int numGlassesSold = (int) (howMuchLemonade * saleRate);
-		int numWasted = lemonade - numGlassesSold;
-
-		int deltaMoney = numGlassesSold * price;
-
-		lemonade = 0;
-		money += deltaMoney;
-
-		return new SalesResults(deltaMoney, numWasted);
+			@Override
+			public void done(int totalNumSold) {
+				int originalNumLemonade = lemonade;
+				int wastedLemonade = originalNumLemonade - totalNumSold;
+				lemonade = 0;
+				money += totalNumSold * price;
+				callback.saleCompleted(new SalesResults(price * totalNumSold, wastedLemonade));
+			}
+		});
 	}
 
 	/**
 	 * Buy groceries.
 	 * @param quantities How much of each grocery item to buy
-	 * @return whether there was enough money to buy them all. If there is not enough money
-	 * then no groceries are purchased.
+	 * @param completion callback to send results about whether there was enough money to buy them all.
+	 *                   If there is not enough money then no groceries are purchased.
 	 */
 	public void buySome(final GameGroceries quantities, final PurchasingService.PurchaseCompletion completion) {
 		final Accessor[] accessors = new Accessor[] { new Accessor.Lemon(), new Accessor.Sugar(), new Accessor.Ice() };

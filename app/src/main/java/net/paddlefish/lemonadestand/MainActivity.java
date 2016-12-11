@@ -1,6 +1,7 @@
 package net.paddlefish.lemonadestand;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,15 +13,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import net.paddlefish.lemonadestand.utils.Cancellable;
+import net.paddlefish.lemonadestand.utils.CancellationPool;
 import net.paddlefish.lemonadestand.model.GameGroceries;
 import net.paddlefish.lemonadestand.model.GameModel;
 import net.paddlefish.lemonadestand.model.GameState;
 import net.paddlefish.lemonadestand.model.IGameState;
 import net.paddlefish.lemonadestand.service.PurchasingService;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import net.paddlefish.lemonadestand.utils.ProgressDialogCancellable;
 
 public class MainActivity extends AppCompatActivity implements
 		HelloFragment.OnFragmentInteractionListener,
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements
 
 	private GameState mGameState;
 	private GameScreen mCurrentScreen;
+	private CancellationPool mCancellationPool = new CancellationPool();
 	private final static String PARAM_SAVED_GAME_SCREEN_CODE = "PARAM_SAVED_GAME_SCREEN_CODE";
 	private final static String PARAM_SAVED_GAME_STATE = "PARAM_SAVED_GAME_STATE";
 
@@ -133,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements
 
 		super.onPause();
 		Log.e("JG", MainActivity.class.getCanonicalName() + ".onPause was called");
+		mCancellationPool.cancel();
 	}
 
 	@Override
@@ -279,25 +281,37 @@ public class MainActivity extends AppCompatActivity implements
 
 	@Override
 	public void sellLemonade(IGameState previousState, int price) {
-		GameModel  gameModel = new GameModel(previousState);
-		int cost = gameModel.lemonadeBaseCostPerGlass();
-		double sellRate = 1.0;
-		if (price == 99999) {
-			sellRate = 1.0;
-		}
-		else if (price > 4 * cost) {
-			sellRate = 0.0;
-		}
-		else if (price > 3 * cost) {
-			sellRate = 0.2;
-		}
-		else if (price > 2 * cost) {
-			sellRate = 0.7;
-		}
-		sellRate = sellRate * (0.8 + Math.random() * 0.4);
-		sellRate = Math.min(1.0, sellRate);
-		GameModel.SalesResults sale = gameModel.sellLemonade(sellRate, price);
-		switchToScreen(GameScreen.DONE_SELLING, gameModel, sale.moneyEarned, sale.glassesWasted);
+		final GameModel  gameModel = new GameModel(previousState);
+
+		final ProgressDialog dialog = new ProgressDialog(this);
+		dialog.setCancelable(true);
+		dialog.setIndeterminate(false);
+		dialog.setProgress(0);
+		dialog.setMessage("Opening shop...");
+		dialog.show();
+		final Cancellable progressCancellable = new ProgressDialogCancellable(dialog);
+
+		final Cancellable task = gameModel.sellLemonade(price, new GameModel.SalesResults.Callback() {
+			@Override
+			public void saleCompleted(GameModel.SalesResults results) {
+				progressCancellable.cancel();
+				switchToScreen(GameScreen.DONE_SELLING, gameModel, results.moneyEarned, results.glassesWasted);
+			}
+
+			@Override
+			public void saleInProgress(int hour, int numSold) {
+				dialog.setProgress(100 * hour / 7);
+				dialog.setMessage(String.format("%d:00.  %d glasses sold", (hour + 8) % 12 + 1, numSold));
+			}
+		});
+		dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialogInterface) {
+				task.cancel();
+			}
+		});
+		mCancellationPool.addCancellable(task);
+		mCancellationPool.addCancellable(progressCancellable);
 	}
 
 	@Override
