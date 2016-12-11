@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
+import net.paddlefish.lemonadestand.service.GameSetupService;
 import net.paddlefish.lemonadestand.utils.Cancellable;
 import net.paddlefish.lemonadestand.utils.CancellationPool;
 import net.paddlefish.lemonadestand.model.GameGroceries;
@@ -147,8 +148,17 @@ public class MainActivity extends AppCompatActivity implements
 	}
 
 	boolean switchToHelloScreen() {
-		return switchToFragment(HelloFragment.newInstance(10000), false);
+		GameSetupService setupService = new GameSetupService();
+		setupService.fetchHighScore(new GameSetupService.HighScoreCallback() {
+			@Override
+			public void onHighScore(int highScore) {
+				switchToFragment(HelloFragment.newInstance(highScore), false);
+			}
+		});
+
+		return true;
 	}
+
 	boolean switchToOutOfMoneyScreen() {
 		return switchToFragment(OutOfMoneyFragment.newInstance());
 	}
