@@ -17,6 +17,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
 }
 
 dependencies {
@@ -28,5 +40,10 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     compile 'com.android.support:support-v4:25.0.1'
     compile 'com.android.support:design:25.0.1'
+    compile (
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.5'],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.8.5'],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.5']
+    )
     testCompile 'junit:junit:4.12'
 }

@@ -1,20 +1,43 @@
 package net.paddlefish.lemonadestand;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class RulesActivity extends AppCompatActivity {
+
+	static class Section {
+		public String section_title;
+		public String[] rules;
+
+		Section() {}
+
+		Section(String section_title, String[] rules) {
+			this.section_title = section_title;
+			this.rules = rules;
+		}
+	}
 
 	/**
 	 * Provides a list of rules, ready to be fed into SimpleAdapter
@@ -25,7 +48,7 @@ public class RulesActivity extends AppCompatActivity {
 	 *
 	 * @return List of entries for SimpleAdapter
 	 */
-	private List<Map<String, Object>> getRules() {
+	private List<Map<String, Object>> getSimpleRules() {
 		String [] rules = {
 			"No crying allowed",
 			"When live gives you lemons, make lemonade!",
@@ -38,10 +61,27 @@ public class RulesActivity extends AppCompatActivity {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("rule", rule);
 			map.put("index", String.format("%d", i+1));
-			map.put("icon", new Integer(R.drawable.blinky));
+			map.put("icon", R.drawable.blinky);
 			list.add(map);
 		}
 		return list;
+	}
+
+	/**
+	 * Provides a list of mSections, ready to be fed into our RulesAdapter
+	 *
+	 * @return List of entries for RulesAdapter
+	 */
+	private Section[] getRules() {
+		try {
+			InputStream is = getAssets().open("rules.json");
+			ObjectMapper mapper = new ObjectMapper();
+			return mapper.readValue(is, Section[].class);
+		}
+		catch(IOException ioe) {
+			String[] rules = new String[] { ioe.getMessage() };
+			return new Section[] { new Section("Error", rules) };
+		}
 	}
 
 	@Override
@@ -51,11 +91,10 @@ public class RulesActivity extends AppCompatActivity {
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		// We need to wire up the R.id.rulesList and bind
-		// the R.id.rulesListIcon and R.id.rulesListRuleText views to
-		// the rules proided by getRules()
+		ActionBar it = getSupportActionBar();
+		if (it != null) {
+			it.setDisplayHomeAsUpEnabled(true);
+		}
 
 		ListView rulesList = (ListView) findViewById(R.id.rulesList);
 		String from[] = new String [] {
@@ -65,8 +104,107 @@ public class RulesActivity extends AppCompatActivity {
 				R.id.rulesListRuleText,
 				R.id.rulesListIcon
 		};
-		rulesList.setAdapter(new SimpleAdapter(getApplicationContext(), getRules(), R.layout.rules_item, from, to));
+		rulesList.setAdapter(new SimpleAdapter(getApplicationContext(), getSimpleRules(), R.layout.rules_item, from, to));
+	}
 
+	static abstract class RulesViewHolder extends RecyclerView.ViewHolder {
+		RulesViewHolder(View view) {
+			super(view);
+		}
+		abstract void bindView(Section section, int row);
+	}
+
+	static class RulesItemViewHolder extends RulesViewHolder {
+		final TextView mTextView;
+		final ImageView mImageView;
+
+		RulesItemViewHolder(View view) {
+			super(view);
+			mTextView = (TextView) view.findViewById(R.id.rulesListRuleText);
+			mImageView = (ImageView) view.findViewById(R.id.rulesListIcon);
+		}
+		void bindView(Section section, int row) {
+            // FIXME: Set the text here
+			mImageView.setImageResource(R.drawable.lemon);
+		}
+	}
+
+	static class RulesHeaderViewHolder extends RulesViewHolder {
+		final TextView mTextView;
+		RulesHeaderViewHolder(View view) {
+			super(view);
+			mTextView = (TextView) view.findViewById(R.id.rules_header);
+		}
+		void bindView(Section section, int row) {
+			mTextView.setText(section.section_title);
+		}
+	}
+
+	// SectionedRecyclerViewAdapter might be easier...
+	// https://github.com/luizgrp/SectionedRecyclerViewAdapter
+	static class RulesAdapter extends RecyclerView.Adapter<RulesViewHolder> {
+		private final static int HEADER_VIEW_TYPE = 1;
+		private final static int ROW_VIEW_TYPE = 2;
+
+		private final Section[] mSections;
+		private final Context mContext;
+
+		RulesAdapter(Section[] sections, Context context) {
+			this.mSections = sections;
+			this.mContext = context;
+		}
+
+		@Override
+		public int getItemViewType(int position) {
+			int sectionAndRow[] = sectionAndRowForPosition(position);
+			if (sectionAndRow != null) {
+				int row = sectionAndRow[1];
+				if (row == -1) {
+					return HEADER_VIEW_TYPE;
+				}
+			}
+			return ROW_VIEW_TYPE;
+		}
+
+		@Override
+		public int getItemCount() {
+			int total = mSections.length;
+			for (Section mSection : mSections) {
+				total += mSection.rules.length;
+			}
+			return total;
+		}
+
+		@Override
+		public RulesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+			LayoutInflater inflater = (LayoutInflater) mContext
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View view;
+			switch (viewType) {
+              // FIXME: Create views here
+			}
+			return null;
+		}
+
+		@Override
+		public void onBindViewHolder(RulesViewHolder holder, int position) {
+			int sectionAndRow[] = sectionAndRowForPosition(position);
+			if (sectionAndRow != null) {
+				Section section = mSections[sectionAndRow[0]];
+				holder.bindView(section, sectionAndRow[1]);
+			}
+		}
+
+		private @Nullable int[] sectionAndRowForPosition(int position) {
+			for (int sectionIndex = 0; sectionIndex <= mSections.length; ++sectionIndex) {
+				Section section = mSections[sectionIndex];
+				if (position <= section.rules.length) {
+					return new int[] { sectionIndex, position - 1 };
+				}
+				position -= section.rules.length + 1;
+			}
+			return null;
+		}
 	}
 
 }
