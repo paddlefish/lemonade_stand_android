@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import net.paddlefish.lemonadestand.service.GameSetupService;
+import net.paddlefish.lemonadestand.service.HighScoreService;
 import net.paddlefish.lemonadestand.utils.Cancellable;
 import net.paddlefish.lemonadestand.utils.CancellationPool;
 import net.paddlefish.lemonadestand.model.GameGroceries;
@@ -259,6 +260,7 @@ public class MainActivity extends AppCompatActivity implements
 
 	@Override
 	public void restUp(IGameState previousState) {
+		HighScoreService.saveHighScore(previousState.getMoney());
 		GameModel  gameModel = new GameModel(previousState);
 		switchToScreen(GameScreen.MONEY, gameModel);
 	}
