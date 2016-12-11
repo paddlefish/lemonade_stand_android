@@ -123,6 +123,13 @@ public class SellingService {
 		}
 
 		@Override
+		protected void onCancelled(Result result) {
+			Log.e("ABR", "Selling task... onCancelled");
+			super.onCancelled();
+			callback.done(result.numSold);
+		}
+
+		@Override
 		protected void onPostExecute(Result result) {
 			super.onPostExecute(result);
 			callback.done(result.numSold);
