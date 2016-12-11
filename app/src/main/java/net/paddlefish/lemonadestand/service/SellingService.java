@@ -8,6 +8,8 @@ import net.paddlefish.lemonadestand.model.GameState;
 import net.paddlefish.lemonadestand.utils.AsyncTaskCancellable;
 
 import static java.lang.Math.ceil;
+import static java.lang.Math.floor;
+import static java.lang.Math.min;
 
 public class SellingService {
 
@@ -55,22 +57,31 @@ public class SellingService {
 		}
 		@Override
 		protected Result doInBackground(Params... paramses) {
-			int numSold[] = new int[paramses.length];
 			int totalNumSold = 0;
+			double residual = 0;
 			for(int hour = 0; hour < 8; hour++) {
 				// Lemonade stand is open for 8 hours
-				for (int i = 0; i < paramses.length; i++) {
-					Params params = paramses[i];
-					if (isCancelled()) {
-						Log.e("ABR", "doInBackground but isCancelled()!");
-						break;
-					}
-					double saleProbability = computeSaleProbability(params.gameState.lemonadeBaseCostPerGlass(), params.price);
-					int numGlassesLeft = params.gameState.getLemonade() - numSold[i];
-					int numSoldThisHour = (int) ceil(numGlassesLeft * saleProbability);
-					numSold[i] += numSoldThisHour;
-					totalNumSold += numSoldThisHour;
+
+				Params params = paramses[0];
+					// We know we always pass exactly 1 param to execute
+
+				if (isCancelled()) {
+					Log.e("ABR", "doInBackground but isCancelled()!");
+					break;
 				}
+				double saleProbability = computeSaleProbability(params.gameState.lemonadeBaseCostPerGlass(), params.price);
+				int numGlassesLeft = params.gameState.getLemonade() - totalNumSold;
+				double floatNum = numGlassesLeft * saleProbability + residual;
+				int numSoldThisHour;
+				if (hour < 7) {
+					numSoldThisHour = (int) floor(floatNum);
+					residual = floatNum - (double) numSoldThisHour;
+				} else {
+					numSoldThisHour = (int) ceil(floatNum);
+				}
+				numSoldThisHour = min(numGlassesLeft, numSoldThisHour);
+				totalNumSold += numSoldThisHour;
+
 				publishProgress(new Progress(hour, totalNumSold));
 				try {
 					Thread.sleep(400);
