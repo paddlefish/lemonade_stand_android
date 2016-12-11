@@ -3,26 +3,26 @@ package net.paddlefish.lemonadestand;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 
 import net.paddlefish.lemonadestand.utils.Cancellable;
 import net.paddlefish.lemonadestand.utils.CancellationPool;
 import net.paddlefish.lemonadestand.model.GameGroceries;
 import net.paddlefish.lemonadestand.model.GameModel;
-import net.paddlefish.lemonadestand.model.GameState;
 import net.paddlefish.lemonadestand.model.IGameState;
 import net.paddlefish.lemonadestand.service.PurchasingService;
 import net.paddlefish.lemonadestand.utils.ProgressDialogCancellable;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements
 		HelloFragment.OnFragmentInteractionListener,
@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity implements
 
 	private boolean isActive;
 	private CancellationPool mCancellationPool = new CancellationPool();
-	private final static String PARAM_SAVED_GAME_SCREEN_CODE = "PARAM_SAVED_GAME_SCREEN_CODE";
-	private final static String PARAM_SAVED_GAME_STATE = "PARAM_SAVED_GAME_STATE";
 
 	/*
 		You must implement the onCreate() method to perform basic application startup logic
@@ -229,7 +227,9 @@ public class MainActivity extends AppCompatActivity implements
 			@Override
 			public void saleInProgress(int hour, int numSold) {
 				dialog.setProgress(100 * hour / 7);
-				dialog.setMessage(String.format("%d:00.  %d glasses sold", (hour + 8) % 12 + 1, numSold));
+				Resources res = getResources();
+				String glassesString = res.getQuantityString(R.plurals.glasses_of_lemonade, numSold, numSold);
+				dialog.setMessage(String.format(Locale.getDefault(), "%d:00.  %s sold", (hour + 8) % 12 + 1, glassesString));
 			}
 		});
 		dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
