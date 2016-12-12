@@ -199,9 +199,9 @@ public class MainActivity extends AppCompatActivity implements
 				}
 			};
 
-			// FIXME Instead of just calling this completion function, add a View Animation
-			// to run spin_and_expand on the lemonView and then proceed.
-			animationListener.onAnimationEnd(null);
+			Animation spinAndExpandAnimation = AnimationUtils.loadAnimation(this, R.anim.spin_and_expand);
+			lemonView.startAnimation(spinAndExpandAnimation);
+			spinAndExpandAnimation.setAnimationListener(animationListener);
 
 			return true;
 		}
