@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -105,6 +106,17 @@ public class RulesActivity extends AppCompatActivity {
 				R.id.rulesListIcon
 		};
 		rulesList.setAdapter(new SimpleAdapter(getApplicationContext(), getSimpleRules(), R.layout.rules_item, from, to));
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			// Respond to the action bar's Up/Home button
+			case android.R.id.home:
+				supportFinishAfterTransition();
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	static abstract class RulesViewHolder extends RecyclerView.ViewHolder {
