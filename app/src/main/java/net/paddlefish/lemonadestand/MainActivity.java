@@ -1,5 +1,6 @@
 package net.paddlefish.lemonadestand;
 
+import android.animation.AnimatorListenerAdapter;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,11 +13,15 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import net.paddlefish.lemonadestand.service.AnnoyingPromptService;
 import net.paddlefish.lemonadestand.service.GameSetupService;
 import net.paddlefish.lemonadestand.service.HighScoreService;
+import net.paddlefish.lemonadestand.utils.AnimationListenerAdapter;
 import net.paddlefish.lemonadestand.utils.Cancellable;
 import net.paddlefish.lemonadestand.utils.CancellationPool;
 import net.paddlefish.lemonadestand.model.GameGroceries;
@@ -185,8 +190,24 @@ public class MainActivity extends AppCompatActivity implements
 		return switchToFragment(OutOfMoneyFragment.newInstance());
 	}
 
-	boolean switchToMoneyScreen(GameModel gameModel) {
-		return switchToFragment(MoneyFragment.newInstance(gameModel.getGameState()));
+	boolean switchToMoneyScreen(final GameModel gameModel) {
+		View lemonView = findViewById(R.id.imageView);
+		if (lemonView != null) {
+			Animation.AnimationListener animationListener = new AnimationListenerAdapter() {
+				public void onAnimationEnd(Animation animation) {
+					switchToFragment(MoneyFragment.newInstance(gameModel.getGameState()));
+				}
+			};
+
+			// FIXME Instead of just calling this completion function, add a View Animation
+			// to run spin_and_expand on the lemonView and then proceed.
+			animationListener.onAnimationEnd(null);
+
+			return true;
+		}
+		else {
+			return switchToFragment(MoneyFragment.newInstance(gameModel.getGameState()));
+		}
 	}
 
 	boolean switchToShoppingScreen(GameModel gameModel) {
