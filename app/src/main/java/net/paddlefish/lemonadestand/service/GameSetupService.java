@@ -38,13 +38,10 @@ public class GameSetupService implements Handler.Callback {
 	 * @param callback the function to call with the result.
 	 */
 	public void fetchHighScore(HighScoreCallback callback) {
-		// TODO: Route this message to our dedicated thread,
-		// call downloadHighScore to get the high score
-		// and send result back to the Main thread via dispatchHighScoreResult
-
-		// For now just dispatch a fake result right away.
-		// FIXME: Delete this line after implementing the correct solution.
-		callback.onHighScore(10000);
+		final int requestId = nextRequestId++;
+		mRequestMap.put(requestId, callback);
+		Message message = mHandler.obtainMessage(MSG_FETCH_HIGH_SCORES, requestId, 0);
+		mHandler.sendMessage(message);
 	}
 
 	/**
