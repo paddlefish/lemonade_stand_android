@@ -11,6 +11,7 @@
 		app:srcCompat="@drawable/blinky"
 		android:contentDescription="@string/app_name"
 		android:id="@+id/imageView"
+		android:transitionName="lemon"
 		android:layout_marginTop="33dp"
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"/>

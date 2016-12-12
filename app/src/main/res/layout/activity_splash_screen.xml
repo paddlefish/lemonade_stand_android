@@ -1,0 +1,21 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			 xmlns:tools="http://schemas.android.com/tools"
+			 android:layout_width="match_parent"
+			 android:layout_height="match_parent"
+			 xmlns:app="http://schemas.android.com/apk/res-auto"
+			 android:background="#0099cc"
+			 tools:context="net.paddlefish.lemonadestand.SplashScreenActivity">
+
+
+	<ImageView
+		android:layout_width="64dp"
+		android:layout_height="64dp"
+		app:srcCompat="@drawable/blinky"
+		android:contentDescription="@string/app_name"
+		android:id="@+id/imageView"
+		android:transitionName="lemon"
+		android:layout_marginBottom="32dp"
+		android:layout_gravity="center_horizontal|bottom"/>
+
+
+</FrameLayout>

@@ -60,6 +60,13 @@ public class MainActivity extends AppCompatActivity implements
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar); // Attaching the layout to the toolbar object
 		setSupportActionBar(toolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
+
+		ViewGroup frame = (ViewGroup) findViewById(R.id.placeholder_view);
+		if (frame.getChildCount() == 0) {
+			isActive = true;
+			switchToHelloScreen();
+			isActive = false;
+		}
 	}
 
 	@Override
@@ -73,10 +80,6 @@ public class MainActivity extends AppCompatActivity implements
 	protected void onResume() {
 		super.onResume();
 		isActive = true;
-		ViewGroup frame = (ViewGroup) findViewById(R.id.placeholder_view);
-		if (frame.getChildCount() == 0) {
-			switchToHelloScreen();
-		}
 		if (!haveSentRequestForFeedback) {
 			haveSentRequestForFeedback = true;
 			AnnoyingPromptService.startActionSendAnnoyingMessageLater(this, "Please fill out our survey", 42);
