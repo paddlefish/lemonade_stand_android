@@ -6,6 +6,15 @@
 			 android:background="#0099cc"
 			 tools:context="net.paddlefish.lemonadestand.SplashScreenActivity">
 
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="@string/hello_blank_fragment"
+		android:id="@+id/appNameTextView"
+		android:layout_gravity="center_horizontal|top"
+		android:layout_marginTop="27dp"
+		android:transitionName="appname"
+		android:textAppearance="@style/TextAppearance.AppCompat.Display1"/>
 
 	<ImageView
 		android:layout_width="64dp"
