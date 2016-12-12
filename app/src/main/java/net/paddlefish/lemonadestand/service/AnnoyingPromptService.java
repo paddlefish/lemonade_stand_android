@@ -55,6 +55,11 @@ public class AnnoyingPromptService extends IntentService {
 		if (intent != null) {
 			final String action = intent.getAction();
 			switch (action) {
+				case ACTION_ANNOY_USER_LATER:
+					final String message = intent.getStringExtra(PARAM_ANNOYING_MESSAGE);
+					final int responseId = intent.getIntExtra(PARAM_RESPONSE_ID, 0);
+					handleActionAnnoyUserLater(message, responseId);
+					break;
 				default:
 					break;
 			}
