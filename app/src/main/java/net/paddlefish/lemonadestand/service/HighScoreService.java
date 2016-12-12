@@ -32,8 +32,12 @@ public class HighScoreService {
 	}
 
 	public static void saveHighScore(final int score) {
-		// FIXME: Implement this method.  It should use a background thread to call saveHighScoreSync
-		// and pass in the score.
+		sharedInstance.getExecutor().execute(new Runnable() {
+			@Override
+			public void run() {
+				saveHighScoreSync(score);
+			}
+		});
 	}
 
 	@SuppressLint("DefaultLocale")
