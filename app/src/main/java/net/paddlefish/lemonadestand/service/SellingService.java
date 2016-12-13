@@ -11,7 +11,7 @@ import static java.lang.Math.ceil;
 import static java.lang.Math.floor;
 import static java.lang.Math.min;
 
-public class SellingService {
+public class SellingService implements ISellingService {
 
 	public interface SellingCallback {
 		void progress(int hourOfDay, int numGlassesSold);

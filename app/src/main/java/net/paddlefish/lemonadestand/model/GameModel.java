@@ -1,6 +1,8 @@
 package net.paddlefish.lemonadestand.model;
 
 
+import net.paddlefish.lemonadestand.service.IPurchasingService;
+import net.paddlefish.lemonadestand.service.ISellingService;
 import net.paddlefish.lemonadestand.service.PurchasingService;
 import net.paddlefish.lemonadestand.service.SellingService;
 import net.paddlefish.lemonadestand.utils.Cancellable;
@@ -13,6 +15,8 @@ import net.paddlefish.lemonadestand.utils.Cancellable;
  */
 
 public class GameModel extends GameModelBase implements IGameState {
+	ISellingService mSellingService;
+	IPurchasingService mPurchasingService;
 
 	/**
 	 * Create a new game model, with a starting amount of money.
@@ -26,6 +30,8 @@ public class GameModel extends GameModelBase implements IGameState {
 		this.money = initialMoney;
 		this.prices = new GameGroceries(DEFAULT_LEMON_PRICE, DEFAULT_SUGAR_PRICE, DEFAULT_ICE_PRICE);
 		this.inventory = new GameGroceries(0, 0, 0);
+		this.mSellingService = new SellingService();
+		this.mPurchasingService = new PurchasingService();
 	}
 
 	public GameModel(IGameState gameState) {
@@ -140,8 +146,7 @@ public class GameModel extends GameModelBase implements IGameState {
 	 * @param callback callback object for collecting results
 	 */
 	public Cancellable sellLemonade(final int price, final SalesResults.Callback callback) {
-		SellingService service = new SellingService();
-		return service.sellLemonade(getGameState(), price, new SellingService.SellingCallback() {
+		return mSellingService.sellLemonade(getGameState(), price, new SellingService.SellingCallback() {
 			@Override
 			public void progress(int hourOfDay, int numGlassesSold) {
 				callback.saleInProgress(hourOfDay, numGlassesSold);
@@ -164,19 +169,17 @@ public class GameModel extends GameModelBase implements IGameState {
 	 * @param completion callback to send results about whether there was enough money to buy them all.
 	 *                   If there is not enough money then no groceries are purchased.
 	 */
-	public void buySome(final GameGroceries quantities, final PurchasingService.PurchaseCompletion completion) {
+	public void buySome(final GameGroceries quantities, final IPurchasingService.IPurchaseCompletion completion) {
 		final Accessor[] accessors = new Accessor[] { new Accessor.Lemon(), new Accessor.Sugar(), new Accessor.Ice() };
 
-		final PurchasingService purchasingService = new PurchasingService();
-
-		final int totalPrice = purchasingService.calculatePriceForGroceries(quantities, prices);
+		final int totalPrice = mPurchasingService.calculatePriceForGroceries(quantities, prices);
 
 		if (money < totalPrice) {
 			completion.result(false);
 			return;
 		}
 
-		new PurchasingService().purchaseGroceries(quantities, totalPrice, prices, new PurchasingService.PurchaseCompletion() {
+		mPurchasingService.purchaseGroceries(quantities, totalPrice, prices, new IPurchasingService.IPurchaseCompletion() {
 			@Override
 			public void result(boolean success) {
 				if (success) {

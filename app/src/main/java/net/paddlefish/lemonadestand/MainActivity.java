@@ -1,6 +1,5 @@
 package net.paddlefish.lemonadestand;
 
-import android.animation.AnimatorListenerAdapter;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,18 +15,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import net.paddlefish.lemonadestand.service.AnnoyingPromptService;
 import net.paddlefish.lemonadestand.service.GameSetupService;
 import net.paddlefish.lemonadestand.service.HighScoreService;
+import net.paddlefish.lemonadestand.service.IPurchasingService;
 import net.paddlefish.lemonadestand.utils.AnimationListenerAdapter;
 import net.paddlefish.lemonadestand.utils.Cancellable;
 import net.paddlefish.lemonadestand.utils.CancellationPool;
 import net.paddlefish.lemonadestand.model.GameGroceries;
 import net.paddlefish.lemonadestand.model.GameModel;
 import net.paddlefish.lemonadestand.model.IGameState;
-import net.paddlefish.lemonadestand.service.PurchasingService;
 import net.paddlefish.lemonadestand.utils.ProgressDialogCancellable;
 
 import java.util.Locale;
@@ -242,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements
 		dialog.show();
 		final Cancellable progressCancellable = new ProgressDialogCancellable(dialog);
 
-		gameModel.buySome(qtyOrdered, new PurchasingService.PurchaseCompletion() {
+		gameModel.buySome(qtyOrdered, new IPurchasingService.IPurchaseCompletion() {
 			@Override
 			public void result(boolean success) {
 				progressCancellable.cancel();
