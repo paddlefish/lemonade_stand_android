@@ -3,6 +3,7 @@ package net.paddlefish.lemonadestand;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -85,8 +86,11 @@ public class HelloFragment extends Fragment {
 		super.onPause();
 
 		ImageView blinkyView = (ImageView) getView().findViewById(R.id.imageView);
-		AnimationDrawable anim = (AnimationDrawable) blinkyView.getDrawable();
-		anim.stop();
+		Drawable drawable = blinkyView.getDrawable();
+		if (drawable instanceof AnimationDrawable) {
+			AnimationDrawable anim = (AnimationDrawable) drawable;
+			anim.stop();
+		}
 	}
 
 	public void onResume() {
