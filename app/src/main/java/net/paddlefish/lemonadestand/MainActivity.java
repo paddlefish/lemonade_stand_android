@@ -173,13 +173,7 @@ public class MainActivity extends AppCompatActivity implements
 	}
 
 	boolean switchToHelloScreen() {
-		GameSetupService setupService = new GameSetupService();
-		setupService.fetchHighScore(new GameSetupService.HighScoreCallback() {
-			@Override
-			public void onHighScore(int highScore) {
-				switchToFragment(HelloFragment.newInstance(highScore), false);
-			}
-		});
+		switchToFragment(HelloFragment.newInstance(0), false);
 
 		return true;
 	}

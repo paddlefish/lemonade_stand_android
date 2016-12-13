@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import net.paddlefish.lemonadestand.service.GameSetupService;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -99,6 +101,20 @@ public class HelloFragment extends Fragment {
 		ImageView blinkyView = (ImageView) getView().findViewById(R.id.imageView);
 		AnimationDrawable anim = (AnimationDrawable) blinkyView.getDrawable();
 		anim.start();
+
+		if (mLastHighScore == 0) {
+			GameSetupService setupService = new GameSetupService();
+			setupService.fetchHighScore(new GameSetupService.HighScoreCallback() {
+				@Override
+				public void onHighScore(int highScore) {
+					TextView highScoreView = (TextView) getView().findViewById(R.id.beatHighScoreTextView);
+					Resources res = getResources();
+					String highScoreMessage = String.format(res.getString(R.string.beat_high_score), (double) highScore / 100.0);
+					highScoreView.setText(highScoreMessage);
+					mLastHighScore = highScore;
+				}
+			});
+		}
 	}
 
 	public void onStartGameButtonPushed(View v) {
