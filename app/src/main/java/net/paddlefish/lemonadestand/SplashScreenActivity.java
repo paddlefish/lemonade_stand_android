@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Pair;
 import android.view.View;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -20,9 +21,14 @@ public class SplashScreenActivity extends AppCompatActivity {
 			@Override
 			public void run() {
 				final View lemonImageView = findViewById(R.id.imageView);
+				final View appNameView = findViewById(R.id.appNameTextView);
 
 				Intent settingsIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
-				ActivityOptions transitionAnimation = ActivityOptions.makeSceneTransitionAnimation(SplashScreenActivity.this, lemonImageView, "lemon");
+
+				ActivityOptions transitionAnimation = ActivityOptions.makeSceneTransitionAnimation(
+						SplashScreenActivity.this,
+						Pair.create(lemonImageView, "lemon"),
+						Pair.create(appNameView, "appname"));
 				Bundle bundle = transitionAnimation.toBundle();
 				startActivity(settingsIntent, bundle);
 			}
