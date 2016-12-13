@@ -97,15 +97,10 @@ public class RulesActivity extends AppCompatActivity {
 			it.setDisplayHomeAsUpEnabled(true);
 		}
 
-		ListView rulesList = (ListView) findViewById(R.id.rulesList);
-		String from[] = new String [] {
-			"rule", "icon",
-		};
-		int to[] = new int [] {
-				R.id.rulesListRuleText,
-				R.id.rulesListIcon
-		};
-		rulesList.setAdapter(new SimpleAdapter(getApplicationContext(), getSimpleRules(), R.layout.rules_item, from, to));
+		RecyclerView rulesList = (RecyclerView) findViewById(R.id.rulesList);
+		rulesList.setAdapter(new RulesAdapter(getRules(), this));
+		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+		rulesList.setLayoutManager(layoutManager);
 	}
 
 	@Override
@@ -136,7 +131,7 @@ public class RulesActivity extends AppCompatActivity {
 			mImageView = (ImageView) view.findViewById(R.id.rulesListIcon);
 		}
 		void bindView(Section section, int row) {
-            // FIXME: Set the text here
+			mTextView.setText(section.rules[row]);
 			mImageView.setImageResource(R.drawable.lemon);
 		}
 	}
@@ -193,7 +188,12 @@ public class RulesActivity extends AppCompatActivity {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View view;
 			switch (viewType) {
-              // FIXME: Create views here
+				case HEADER_VIEW_TYPE:
+					view = inflater.inflate(R.layout.rules_header_layout, parent, false);
+					return new RulesHeaderViewHolder(view);
+				case ROW_VIEW_TYPE:
+					view = inflater.inflate(R.layout.rules_item, parent, false);
+					return new RulesItemViewHolder(view);
 			}
 			return null;
 		}
