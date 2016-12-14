@@ -10,5 +10,9 @@
 		android:title="@string/settings"
 		android:icon="@drawable/lemon"
 		app:showAsAction="ifRoom" />
+	<item
+		android:id="@+id/action_themes"
+		android:orderInCategory="300"
+		android:title="@string/themes_action_menu_title" />
 
 </menu>

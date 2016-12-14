@@ -18,7 +18,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import net.paddlefish.lemonadestand.service.AnnoyingPromptService;
-import net.paddlefish.lemonadestand.service.GameSetupService;
 import net.paddlefish.lemonadestand.service.HighScoreService;
 import net.paddlefish.lemonadestand.service.IPurchasingService;
 import net.paddlefish.lemonadestand.utils.AnimationListenerAdapter;
@@ -27,6 +26,7 @@ import net.paddlefish.lemonadestand.utils.CancellationPool;
 import net.paddlefish.lemonadestand.model.GameGroceries;
 import net.paddlefish.lemonadestand.model.GameModel;
 import net.paddlefish.lemonadestand.model.IGameState;
+import net.paddlefish.lemonadestand.utils.Preferences;
 import net.paddlefish.lemonadestand.utils.ProgressDialogCancellable;
 
 import java.util.Locale;
@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
+
+		Preferences.initPrefs(this);
 
 		if (savedInstanceState != null) {
 			haveSentRequestForFeedback = savedInstanceState.getBoolean(PARAM_HAVE_SENT_REQUEST_FOR_FEEDBACK);
@@ -115,12 +117,17 @@ public class MainActivity extends AppCompatActivity implements
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings) {
-			Intent settingsIntent = new Intent(this, RulesActivity.class);
-			startActivity(settingsIntent);
-			return true;
+		switch (id) {
+			case R.id.action_settings:
+				Intent settingsIntent = new Intent(this, RulesActivity.class);
+				startActivity(settingsIntent);
+				return true;
+			case R.id.action_themes:
+				Intent themesIntent = new Intent(this, ThemesActivity.class);
+				startActivity(themesIntent);
+				return true;
 		}
+
 
 		return super.onOptionsItemSelected(item);
 	}
