@@ -17,7 +17,9 @@ import retrofit2.http.Path;
 
 public interface ThemeService {
 
+	@GET("api/v1/themes.json")
 	Call<List<GameTheme>> getThemes();
 
+	@GET("api/v1/theme/{color}/theme.json")
 	Call<GameThemeDetails> getTheme(@Path("color") String color);
 }

@@ -3,6 +3,7 @@ package net.paddlefish.lemonadestand;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -16,14 +17,34 @@ import net.paddlefish.lemonadestand.utils.Preferences;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Callback;
+import retrofit2.JacksonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class ThemesActivity extends AppCompatActivity {
 	ThemeService mThemeService;
 	ThemeAdapter mThemeAdapter;
+	ListView mThemeList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_themes);
+
+		Retrofit retrofit = new Retrofit.Builder()
+				.baseUrl("http://paddlefish.net/evine_training/")
+				.addConverterFactory(JacksonConverterFactory.create())
+				.build();
+
+		mThemeList = (ListView) findViewById(R.id.themeList);
+
+		mThemeAdapter = new ThemeAdapter(ThemesActivity.this);
+		mThemeList.setAdapter(mThemeAdapter);
+
+		mThemeService = retrofit.create(ThemeService.class);
+		mThemeService.getThemes().enqueue(new GetThemeListCallback());
+		mThemeList.setOnItemClickListener(new ThemeClickListener());
 	}
 
 	public class ThemeClickListener implements ListView.OnItemClickListener {
@@ -47,6 +68,7 @@ public class ThemesActivity extends AppCompatActivity {
 	}
 
 	private void requestThemeDetails(GameTheme theme) {
+		mThemeService.getTheme(theme.color).enqueue(new GameThemeDetailsCallback());
 	}
 
 	private void updateTheme(GameThemeDetails newItem) {
@@ -70,4 +92,30 @@ public class ThemesActivity extends AppCompatActivity {
 		mThemeAdapter.insert(newItem, position);
 		mThemeAdapter.notifyDataSetChanged();
 	}
+
+	private class GetThemeListCallback implements Callback<List<GameTheme>> {
+
+		@Override
+		public void onResponse(Response<List<GameTheme>> response) {
+          setThemes(response.body());
+		}
+
+		@Override
+		public void onFailure(Throwable t) {
+            Log.e("ThemesActivity", "Can't get details", t);
+		}
+    }
+
+    private class GameThemeDetailsCallback implements Callback<GameThemeDetails> {
+
+        @Override
+        public void onResponse(Response<GameThemeDetails> response) {
+            updateTheme(response.body());
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+            Log.e("ThemesActivity", "Can't get details", t);
+        }
+    }
 }
