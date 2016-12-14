@@ -3,7 +3,6 @@ package net.paddlefish.lemonadestand;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,7 @@ import net.paddlefish.lemonadestand.model.GameGroceries;
 import net.paddlefish.lemonadestand.model.GameState;
 import net.paddlefish.lemonadestand.model.IGameState;
 
-import org.w3c.dom.Text;
+import org.parceler.Parcels;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -57,7 +56,7 @@ public class ShoppingFragment extends GameStateFragment {
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		outState.putParcelable(PARAM_QTY_ORDERED, qtyOrdered);
+		outState.putParcelable(PARAM_QTY_ORDERED, Parcels.wrap(qtyOrdered));
 
 		super.onSaveInstanceState(outState);
 	}

@@ -13,6 +13,8 @@ import android.widget.TextView;
 import net.paddlefish.lemonadestand.model.GameState;
 import net.paddlefish.lemonadestand.model.IGameState;
 
+import org.parceler.Parcels;
+
 import java.text.NumberFormat;
 
 
@@ -46,7 +48,7 @@ public class DoneSellingFragment extends GameStateFragment {
 	public static DoneSellingFragment newInstance(GameState gameState, int newEarnings, int wastedGlasses) {
 		DoneSellingFragment fragment = new DoneSellingFragment();
 		Bundle args = new Bundle();
-		args.putParcelable(ARG_GAME_STATE, gameState);
+		args.putParcelable(ARG_GAME_STATE, Parcels.wrap(gameState));
 		args.putInt(ARG_NEW_EARNINGS_PARAM, newEarnings);
 		args.putInt(ARG_WASTED_GLASSES_PARAM, wastedGlasses);
 		fragment.setArguments(args);
