@@ -1,6 +1,8 @@
 package net.paddlefish.lemonadestand;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -13,8 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -132,7 +132,10 @@ public class RulesActivity extends AppCompatActivity {
 		}
 		void bindView(Section section, int row) {
 			mTextView.setText(section.rules[row]);
-			mImageView.setImageResource(R.drawable.lemon);
+			mImageView.setImageResource(R.drawable.ic_lemon_top);
+			SharedPreferences settings = mImageView.getContext().getSharedPreferences("Lemonade Stand", MODE_PRIVATE);
+			int tint = (int) settings.getLong("theme_rgb", Color.YELLOW);
+			mImageView.setColorFilter(tint);
 		}
 	}
 
