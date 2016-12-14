@@ -15,6 +15,8 @@ import net.paddlefish.lemonadestand.R;
 import net.paddlefish.lemonadestand.model.GameThemeDetails;
 import net.paddlefish.lemonadestand.utils.Preferences;
 
+import butterknife.ButterKnife;
+
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -31,25 +33,27 @@ public class ThemeAdapter extends ArrayAdapter<GameThemeDetails> {
 	@NonNull
 	@Override
 	public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-		View view = convertView;
+		ThemeViewHolder view = (ThemeViewHolder) convertView;
 		if (view == null) {
 			LayoutInflater inflater = LayoutInflater.from(getContext());
-			view = inflater.inflate(R.layout.theme_item, parent, false);
+			view = (ThemeViewHolder) inflater.inflate(R.layout.theme_item, parent, false);
+			view.bindViews();
 		}
 		GameThemeDetails theme = getItem(position);
 		if (theme != null) {
-			ImageView iconView = (ImageView) view.findViewById(R.id.themeIcon);
+			ImageView iconView = view.mIconView;
 			String url = theme.url;
 
 			// FIXME : Use Glide to load that url into iconView
+			Glide.with(getContext()).load(url).into(iconView);
 
-			TextView themeInfoView = (TextView) view.findViewById(R.id.themeInfo);
+			TextView themeInfoView = view.mInfoView;
 			themeInfoView.setText(theme.info);
 
-			TextView themeNameView = (TextView) view.findViewById(R.id.themeName);
+			TextView themeNameView = view.mNameView;
 			themeNameView.setText(theme.name);
 
-			ImageView checkedView = (ImageView) view.findViewById(R.id.themeChecked);
+			ImageView checkedView = view.mCheckedView;
 			Boolean isCurrentTheme = Preferences.isSelectedTheme(theme);
 			if (isCurrentTheme) {
 				checkedView.setVisibility(VISIBLE);
@@ -59,6 +63,5 @@ public class ThemeAdapter extends ArrayAdapter<GameThemeDetails> {
 		}
 		return view;
 	}
-
 
 }
