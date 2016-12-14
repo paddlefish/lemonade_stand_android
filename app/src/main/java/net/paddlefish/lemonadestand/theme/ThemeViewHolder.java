@@ -23,7 +23,7 @@ public class ThemeViewHolder extends LinearLayout {
 	TextView mInfoView;
 	@BindView(R.id.themeName)
 	TextView mNameView;
-
+	@BindView(R.id.themeChecked)
 	ImageView mCheckedView;
 
 	public ThemeViewHolder(Context context) {
@@ -36,12 +36,5 @@ public class ThemeViewHolder extends LinearLayout {
 
 	void bindViews() {
 		ButterKnife.bind(this);
-
-		// FIXME: Use butterknife to bind mCheckedView to R.id.themeChecked
-		// Instead of this code:
-		// Delete from here...
-		mCheckedView = (ImageView) findViewById(R.id.themeChecked);
-
-		// ... to here and replace with your implementation!
 	}
 }
